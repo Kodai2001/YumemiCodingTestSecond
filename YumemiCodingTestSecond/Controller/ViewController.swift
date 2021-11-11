@@ -12,6 +12,7 @@ class ViewController: UIViewController {
     var task: URLSessionTask?
     
     var textUserInput: String?
+    
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.backgroundColor = .secondarySystemBackground
@@ -25,7 +26,7 @@ class ViewController: UIViewController {
         return tableView
     }()
     
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(searchBar)
         view.addSubview(tableView)
@@ -69,22 +70,20 @@ extension ViewController: UISearchBarDelegate {
             }
         }
     }
-   
 }
 
 //MARK: - tableView
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return repositories.count
+        return items.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        
-        let repository = repositories[indexPath.row]
-        //cell.textLabel?.text = data["full_name"] as? String ?? ""
-        cell.detailTextLabel?.text = repository.language as? String ?? ""
+        let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "cell")
+        let item = items[indexPath.row]
+        cell.textLabel?.text = item.fullName ?? ""
+        cell.detailTextLabel?.text = item.language ?? ""
         cell.tag = indexPath.row
         
         return cell
@@ -98,11 +97,9 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         vc.navigationItem.largeTitleDisplayMode = .never
         vc.navigationItem.title = "Result"
         
-        let repository = repositories[indexPath.row]
-        print(repository.language)
         // ResultVCに値を渡す
         vc.indexPathRow = indexPath.row
-        vc.repositories = repositories
+        //vc.items = self.items
         navigationController?.pushViewController(vc, animated: true)
     }
 }
