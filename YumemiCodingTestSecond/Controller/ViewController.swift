@@ -7,19 +7,6 @@
 
 import UIKit
 
-struct Repository: Codable {
-    //let fullName: String
-    var language: String
-//    let stars: Int
-//    let watchers: Int
-//    let forks: Int
-//    let openIssues: Int
-//    struct owner: Codable {
-//        let avatarUrl: String
-//    }
-    
-}
-
 class ViewController: UIViewController {
     
     fileprivate var repositories: [Repository] = []
