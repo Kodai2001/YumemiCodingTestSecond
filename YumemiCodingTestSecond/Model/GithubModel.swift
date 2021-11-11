@@ -14,9 +14,11 @@ class Github {
         let task: URLSessionTask?
         var url: String?
         
+        guard let textsEncodeString = textUserInput.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {
+            return
+        }
         
-        
-        url = "https://api.github.com/search/repositories?q=\(textUserInput)"
+        url = "https://api.github.com/search/repositories?q=\(textsEncodeString)"
         guard let url = url else {
             return
         }
