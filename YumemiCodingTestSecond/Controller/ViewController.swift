@@ -8,13 +8,10 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
-    fileprivate var repositories: [Repository] = []
-    
-    
+    var items: [Repository.Item] = []
     var task: URLSessionTask?
+    
     var textUserInput: String?
-    var url: String?
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.backgroundColor = .secondarySystemBackground
@@ -64,33 +61,13 @@ extension ViewController: UISearchBarDelegate {
             return
         }
         if textUserInput.count != 0 {
-            fetchRepository(with: textUserInput, completion: {( repository ) in
-                //self.repositories = repository
+            Github.getTableItems(with: textUserInput) { items in
+                self.items = items
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
-            })
-        }
-    }
-    func fetchRepository(with textUserInput: String, completion: @escaping (Repository) -> Swift.Void) {
-        url = "https://api.github.com/search/repositories?q=\(textUserInput)"
-        guard let url = url else {return}
-        task = URLSession.shared.dataTask(with: URL(string: url)!) { (data, res, err) in
-            guard let jsonData = data else {
-                return
-            }
-            do {
-                print(jsonData)
-                let repository = try JSONDecoder().decode(Repository.self, from: jsonData)
-                print(repository)
-                completion(repository)
-            } catch {
-                print(error.localizedDescription)
             }
         }
-        // これ呼ばなきゃリストが更新されません
-        task?.resume()
-        
     }
    
 }

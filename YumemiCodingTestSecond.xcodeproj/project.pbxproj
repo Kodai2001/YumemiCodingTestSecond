@@ -15,6 +15,7 @@
 		8823A34C273C9DF800C7E228 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8823A34A273C9DF800C7E228 /* LaunchScreen.storyboard */; };
 		8823A35B273C9F7600C7E228 /* ResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8823A35A273C9F7600C7E228 /* ResultViewController.swift */; };
 		8823A36D273D125600C7E228 /* RepositoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8823A36C273D125600C7E228 /* RepositoryModel.swift */; };
+		8823A36F273D132A00C7E228 /* GithubModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8823A36E273D132A00C7E228 /* GithubModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		8823A34D273C9DF800C7E228 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8823A35A273C9F7600C7E228 /* ResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultViewController.swift; sourceTree = "<group>"; };
 		8823A36C273D125600C7E228 /* RepositoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryModel.swift; sourceTree = "<group>"; };
+		8823A36E273D132A00C7E228 /* GithubModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				8823A36C273D125600C7E228 /* RepositoryModel.swift */,
+				8823A36E273D132A00C7E228 /* GithubModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -171,6 +174,7 @@
 				8823A36D273D125600C7E228 /* RepositoryModel.swift in Sources */,
 				8823A340273C9DF300C7E228 /* AppDelegate.swift in Sources */,
 				8823A342273C9DF300C7E228 /* SceneDelegate.swift in Sources */,
+				8823A36F273D132A00C7E228 /* GithubModel.swift in Sources */,
 				8823A35B273C9F7600C7E228 /* ResultViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
