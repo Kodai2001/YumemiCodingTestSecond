@@ -7,12 +7,27 @@
 
 import UIKit
 
+struct Repository: Codable {
+    //let fullName: String
+    var language: String
+//    let stars: Int
+//    let watchers: Int
+//    let forks: Int
+//    let openIssues: Int
+//    struct owner: Codable {
+//        let avatarUrl: String
+//    }
+    
+}
+
 class ViewController: UIViewController {
-    var items: [Repository.Item] = []
+    
+    fileprivate var repositories: [Repository] = []
+    
+    
     var task: URLSessionTask?
-    
     var textUserInput: String?
-    
+    var url: String?
     private let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.backgroundColor = .secondarySystemBackground
@@ -26,7 +41,7 @@ class ViewController: UIViewController {
         return tableView
     }()
     
-    public override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(searchBar)
         view.addSubview(tableView)
@@ -62,28 +77,50 @@ extension ViewController: UISearchBarDelegate {
             return
         }
         if textUserInput.count != 0 {
-            Github.getTableItems(with: textUserInput) { items in
-                self.items = items
+            fetchRepository(with: textUserInput, completion: {( repository ) in
+                //self.repositories = repository
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
-            }
+            })
         }
     }
+    func fetchRepository(with textUserInput: String, completion: @escaping (Repository) -> Swift.Void) {
+        url = "https://api.github.com/search/repositories?q=\(textUserInput)"
+        guard let url = url else {return}
+        task = URLSession.shared.dataTask(with: URL(string: url)!) { (data, res, err) in
+            guard let jsonData = data else {
+                return
+            }
+            do {
+                print(jsonData)
+                let repository = try JSONDecoder().decode(Repository.self, from: jsonData)
+                print(repository)
+                completion(repository)
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        // これ呼ばなきゃリストが更新されません
+        task?.resume()
+        
+    }
+   
 }
 
 //MARK: - tableView
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        return repositories.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: UITableViewCell.CellStyle.default, reuseIdentifier: "cell")
-        let item = items[indexPath.row]
-        cell.textLabel?.text = item.fullName ?? ""
-        cell.detailTextLabel?.text = item.language ?? ""
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        
+        let repository = repositories[indexPath.row]
+        //cell.textLabel?.text = data["full_name"] as? String ?? ""
+        cell.detailTextLabel?.text = repository.language as? String ?? ""
         cell.tag = indexPath.row
         
         return cell
@@ -97,9 +134,11 @@ extension ViewController: UITableViewDelegate, UITableViewDataSource {
         vc.navigationItem.largeTitleDisplayMode = .never
         vc.navigationItem.title = "Result"
         
+        let repository = repositories[indexPath.row]
+        print(repository.language)
         // ResultVCに値を渡す
         vc.indexPathRow = indexPath.row
-        vc.items = self.items
+        vc.repositories = repositories
         navigationController?.pushViewController(vc, animated: true)
     }
 }
