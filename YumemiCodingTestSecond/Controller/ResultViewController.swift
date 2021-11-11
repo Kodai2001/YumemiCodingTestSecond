@@ -10,9 +10,8 @@ import UIKit
 class ResultViewController: UIViewController {
     
     let vc = ViewController()
-    var indexPathRow: Int!
-    var repositories: [Repository] = []
-    
+    var indexPathRow: Int = 0
+    var items: [Repository.Item] = []
     let imageView: UIImageView = {
         let imageView = UIImageView()
         
@@ -81,37 +80,36 @@ class ResultViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
-       // getText()
+        // getText()
         getImage()
         addSubviews()
     }
     
     // ラベルのテキスト内容を取得する
-//    private func getText() {
-//        let repository = repositories[indexPathRow]
-//        languageLabel.text = "Written in \(repository.language as? String ?? "")"
-//        starsLabel.text = "\(repository.stars as? Int ?? 0) stars"
-//        watchersLabel.text = "\(repository.watchers as? Int ?? 0) watchers"
-//        forksLabel.text = "\(repository.forks as? Int ?? 0) forks"
-//        issuesLabel.text = "\(repository.openIssues as? Int ?? 0) open issues"
-//    }
+    private func getText() {
+        let item = items[indexPathRow]
+        languageLabel.text = "Written in \(item.language ?? "")"
+        starsLabel.text = "\(item.starsCount ?? 0) stars"
+        watchersLabel.text = "\(item.watchersCount ?? 0) watchers"
+        forksLabel.text = "\(item.forksCount ?? 0) forks"
+        issuesLabel.text = "\(item.openIssuesCount ?? 0) open issues"
+    }
     
     // imageViewを取得する
     private func getImage() {
-        let repository = repositories[indexPathRow]
+        let item = items[indexPathRow]
+        titleLabel.text = item.fullName ?? ""
         
-      //  titleLabel.text = repository.fullName as? String
-        
-//        if let owner = data["owner"] as? [String: Any] {
-//            if let imgURL = owner["avatar_url"] as? String {
-//                URLSession.shared.dataTask(with: URL(string: imgURL)!) { (data, res, err) in
-//                    let img = UIImage(data: data!)!
-//                    DispatchQueue.main.async {
-//                        self.imageView.image = img
-//                    }
-//                }.resume()
-//            }
-//        }
+        if let owner = item.owner {
+            if let imgURL = owner.avatarUrl {
+                URLSession.shared.dataTask(with: URL(string: imgURL)!) { (data, res, err) in
+                    let image = UIImage(data: data!)!
+                    DispatchQueue.main.async {
+                        self.imageView.image = image
+                    }
+                }.resume()
+            }
+        }
     }
     
     private func addSubviews() {
